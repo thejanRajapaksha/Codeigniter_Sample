@@ -14,10 +14,20 @@ class demomodel extends CI_Model {
         $quantity = $this->input->post('quantity');
         $Unit_price = $this->input->post('unit_price');
         $Selling_price = $this->input->post('selling_price');
+        $textid = $this->input->post('text-id');
 
-        $sql = "INSERT INTO products (Product_name, date, quantity, Unit_price, Selling_price) 
-                VALUES (?, ?, ?, ?, ?)";
-        return $this->db->query($sql, array($Product_name, $date, $quantity, $Unit_price, $Selling_price));
+        if($textid == 1){
+            $sql = "INSERT INTO products (Product_name, date, quantity, Unit_price, Selling_price) 
+                    VALUES (?, ?, ?, ?, ?)";
+            return $this->db->query($sql, array($Product_name, $date, $quantity, $Unit_price, $Selling_price));
+        }
+
+        else{
+            $id = $this->input->post('id');   
+            $sql = "UPDATE products SET Product_name = ?, date = ?, quantity = ?, Unit_price = ?, Selling_price = ? WHERE id = ?";
+            return $this->db->query($sql, array($Product_name, $date, $quantity, $Unit_price, $Selling_price, $id));
+        }
+        
     }
 
     public function get_all_products() {
@@ -25,18 +35,5 @@ class demomodel extends CI_Model {
         return $query->result_array();
     }
 
-    public function update_product() {
-        $id = $this->input->post('id');
-        $data = array(
-            'Product_name' => $this->input->post('product_name'),
-            'date' => $this->input->post('date'),
-            'quantity' => $this->input->post('quantity'),
-            'Unit_price' => $this->input->post('unit_price'),
-            'Selling_price' => $this->input->post('selling_price')
-        );
-
-        $this->db->where('id', $id);
-        return $this->db->update('products', $data);
-    }
 }
 ?>

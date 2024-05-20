@@ -19,15 +19,5 @@ class PageController extends CI_Controller {
         redirect('PageController/index');
     }
 
-    public function update_product() {
-        // header('Content-Type: application/json');
-
-        $update = $this->demomodel->update_product();
-        if ($update) {
-            echo json_encode(array('success' => true));
-        } else {
-            echo json_encode(array('success' => false));
-        }
-    }
 }
 ?>
