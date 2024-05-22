@@ -36,13 +36,12 @@
                         <label for="selling_price">Selling Price:</label>
                         <input type="number" step="0.01" class="form-control" name="selling_price" id="selling_price" required>
                     </div>
-                    <div class="form-group">
-                        <label for="text-id">textID</label>
-                        <input type="number" class="form-control" name="text-id" id="text-id" required>
-                    </div>
                     <button type="submit" class="btn btn-primary" id="submitBtn" >Add Product</button>
                 </fieldset>
+                <input type="hidden" class="form-control" name="recordOption" id="recordOption" value="1" required>
+                <input type="hidden" name="recordID" id="recordID" value="">
             </form>
+
         </div>
 
 
@@ -75,17 +74,16 @@
                                     <td>
                                         <button class="btn btn-warning btn-sm edit-btn" 
                                         data-id="<?php echo $product['id']; ?>" 
-                                        data-name="<?php echo $product['Product_name']; ?>" 
-                                        data-date="<?php echo $product['date']; ?>" 
-                                        data-quantity="<?php echo $product['quantity']; ?>" 
-                                        data-unitprice="<?php echo $product['Unit_price']; ?>" 
-                                        data-sellingprice="<?php echo $product['Selling_price']; ?>">Edit</button>
+                                        >Edit</button>
                                     </td>
+                                    <td><button type="button" class="btn btn-danger btn-sm delete-btn" 
+                                    data-id="<?php echo $product['id']; ?>"
+                                    <?php echo site_url('PageController/delete_product'); ?>>delete</button></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="7" class="text-center">No products available</td>
+                                <td colspan="8" class="text-center">No products available</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
@@ -103,23 +101,46 @@
 <script>
 $(document).ready(function() {
     $('.edit-btn').on('click', function() {
-        var id = $(this).data('id');
-        var name = $(this).data('name');
-        var date = $(this).data('date');
-        var quantity = $(this).data('quantity');
-        var unitPrice = $(this).data('unitprice');
-        var sellingPrice = $(this).data('sellingprice');
+        var r = confirm("Are you sure you want to edit this?");
+        if (r == true) {
+            var id = $(this).data('id'); 
+            $.ajax({
+                type: "POST",
+                data: {
+                    recordID: id
+                },
+                url: '<?php echo base_url() ?>PageController/edit_product',
+                success: function(result) { 
+                    var obj = JSON.parse(result);
 
-        $('#id').val(id);
-        $('#product_name').val(name);
-        $('#date').val(date);
-        $('#quantity').val(quantity);
-        $('#unit_price').val(unitPrice);
-        $('#selling_price').val(sellingPrice);
-
+                    $('#id').val(obj.id); 
+                    $('#product_name').val(obj.product_name);
+                    $('#date').val(obj.date);
+                    $('#quantity').val(obj.quantity);
+                    $('#unit_price').val(obj.unit_price); 
+                    $('#selling_price').val(obj.selling_price); 
+                    $('#recordOption').val('');
+                }
+            });
+        }
     });
 
+    $('.delete-btn').on('click', function() {
+        var q = confirm("Are you sure you want to delete this?");
+        if (q == true) {
+            var id = $(this).data('id');
+        $.ajax({
+            type: "POST",
+            data: { id: id },
+            url: '<?php echo base_url() ?>PageController/delete_product',
+            success: function(response) {
+                location.reload();
+            }
+        });
+        }   
+    });
 });
+
 
 </script>
 </body>

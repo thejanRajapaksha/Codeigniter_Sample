@@ -19,5 +19,15 @@ class PageController extends CI_Controller {
         redirect('PageController/index');
     }
 
+    public function edit_product() {
+        $result=$this->demomodel->edit_product();
+        echo $result;
+    }
+
+    public function delete_product() {
+        $this->demomodel->delete_product();
+        echo json_encode(array("status" => "success"));
+    }
+
 }
 ?>
