@@ -72,7 +72,7 @@
                                     <td><?php echo $product['Unit_price']; ?></td>
                                     <td><?php echo $product['Selling_price']; ?></td>
                                     <td>
-                                        <button class="btn btn-warning btn-sm edit-btn" 
+                                        <button class="btn btn-primary btn-sm edit-btn" 
                                         data-id="<?php echo $product['id']; ?>" 
                                         >Edit</button>
                                     </td>
