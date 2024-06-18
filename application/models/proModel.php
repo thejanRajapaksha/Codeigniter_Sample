@@ -14,16 +14,20 @@ class proModel extends CI_Model {
         $price = $this->input->post('price');
         $recordOption = $this->input->post('recordOption');
 
+        $data = array(
+            'item_name' => $item_name,
+            'emp_name' => $emp_name,
+            'price' => $price,
+        );
+
         if($recordOption == 1){
-            $sql = "INSERT INTO items (item_name, emp_name, price ) 
-                    VALUES (?, ?, ?)";
-            return $this->db->query($sql, array($item_name, $emp_name, $price));
+            $this->db->insert('items', $data);
         }
 
         else{
             $id = $this->input->post('recordID');   
-            $sql = "UPDATE items SET item_name = ?,emp_name = ?, price = ? WHERE item_id = ?";
-            return $this->db->query($sql, array($item_name, $emp_name, $price, $id));
+            $this->db->where('item_id', $id);
+            $this->db->update('items', $data);
         }
         
     }

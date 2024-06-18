@@ -12,6 +12,8 @@ class proController extends CI_Controller {
     public function index() {
         $result['employeeList']=$this->proModel->GetEmployeeList();
         $this->load->view('productsview',$result);
+        // $this->load->view('tableAppend');
+
     }
 
     public function productsviewinsertupdate() {
